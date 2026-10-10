@@ -1,1 +1,273 @@
 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+  <title>GUARDIANA Antes V0.1</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f0fa;
+      color: #302442;
+    }
+
+    header {
+      background: #633b87;
+      color: white;
+      padding: 28px 16px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 29px;
+    }
+
+    header p { margin-bottom: 0; }
+
+    main {
+      max-width: 440px;
+      margin: 24px auto;
+      padding: 0 16px;
+    }
+
+    .card {
+      background: white;
+      padding: 24px;
+      border-radius: 18px;
+      box-shadow: 0 4px 16px #00000012;
+    }
+
+    h2 { margin-top: 0; }
+
+    label {
+      display: block;
+      margin: 18px 0 8px;
+      font-weight: bold;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #aaa;
+      border-radius: 9px;
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      padding: 15px;
+      margin-top: 15px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .primary {
+      background: #633b87;
+      color: white;
+    }
+
+    .danger {
+      background: #b32635;
+      color: white;
+    }
+
+    .success {
+      background: #157347;
+      color: white;
+    }
+
+    .secondary {
+      background: #eee7f5;
+      color: #302442;
+    }
+
+    .notice {
+      background: #fff1cf;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      margin-bottom: 18px;
+    }
+
+    .hidden { display: none; }
+
+    #status {
+      padding: 12px;
+      background: #eee7f5;
+      border-radius: 8px;
+      line-height: 1.5;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 12px;
+      padding: 24px;
+      color: #665c70;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>🛡️ GUARDIANA</h1>
+    <p>ANTES · Tu seguridad comienza antes</p>
+  </header>
+
+  <main>
+    <section class="card">
+      <div class="notice">
+        PROTOTIPO DEMOSTRATIVO.
+        No envía alertas reales, no rastrea
+        ubicación y no contacta emergencias.
+      </div>
+
+      <div id="inicio">
+        <h2>Mi trayecto seguro</h2>
+        <p>Prepara tu recorrido de prueba.</p>
+
+        <label for="destino">Mi destino</label>
+        <input id="destino"
+               type="text"
+               placeholder="Ejemplo: Universidad"
+               maxlength="80">
+
+        <label for="duracion">
+          Duración estimada
+        </label>
+        <select id="duracion">
+          <option value="15">15 minutos</option>
+          <option value="30">30 minutos</option>
+          <option value="60">60 minutos</option>
+        </select>
+
+        <button class="primary"
+                onclick="iniciarTrayecto()">
+          Iniciar trayecto de prueba
+        </button>
+      </div>
+
+      <div id="trayecto" class="hidden">
+        <h2>Trayecto iniciado</h2>
+        <p id="status" role="status"></p>
+
+        <button class="danger"
+                onclick="activarSOS()">
+          SOS - Necesito ayuda
+        </button>
+
+        <button class="success"
+                onclick="finalizarTrayecto()">
+          Llegué a salvo
+        </button>
+
+        <button class="secondary"
+                onclick="cancelarTrayecto()">
+          Cancelar simulación
+        </button>
+      </div>
+
+      <div id="resultado" class="hidden">
+        <h2 id="tituloResultado"></h2>
+        <p id="mensajeResultado"
+           role="status"></p>
+
+        <button class="primary"
+                onclick="volverInicio()">
+          Volver al inicio
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    GUARDIANA Antes V0.1
+    <p>Demostración educativa · Ecuador</p>
+  </footer>
+
+  <script>
+    const inicio = document.getElementById("inicio");
+    const trayecto = document.getElementById("trayecto");
+    const resultado = document.getElementById("resultado");
+
+    function mostrar(pantalla) {
+      inicio.classList.add("hidden");
+      trayecto.classList.add("hidden");
+      resultado.classList.add("hidden");
+      pantalla.classList.remove("hidden");
+    }
+
+    function iniciarTrayecto() {
+      const destino = document
+        .getElementById("destino").value.trim();
+
+      const duracion = document
+        .getElementById("duracion").value;
+
+      if (!destino) {
+        alert("Por favor, ingresa un destino.");
+        return;
+      }
+
+      document.getElementById("status")
+        .textContent =
+        "Destino: " + destino +
+        " | Duración estimada: " +
+        duracion + " minutos." +
+        " Simulación activa.";
+
+      mostrar(trayecto);
+    }
+
+    function activarSOS() {
+      mostrarResultado(
+        "SOS de demostración",
+        "Esta es una simulación. " +
+        "No se ha enviado ninguna alerta. " +
+        "Si existe una emergencia real en " +
+        "Ecuador, comunícate con el 911."
+      );
+    }
+
+    function finalizarTrayecto() {
+      mostrarResultado(
+        "Llegada confirmada",
+        "Has finalizado el trayecto " +
+        "de demostración. No se ha " +
+        "notificado a ningún contacto."
+      );
+    }
+
+    function cancelarTrayecto() {
+      mostrarResultado(
+        "Simulación cancelada",
+        "El trayecto de prueba " +
+        "ha sido cancelado."
+      );
+    }
+
+    function mostrarResultado(titulo, mensaje) {
+      document.getElementById("tituloResultado")
+        .textContent = titulo;
+
+      document.getElementById("mensajeResultado")
+        .textContent = mensaje;
+
+      mostrar(resultado);
+    }
+
+    function volverInicio() {
+      mostrar(inicio);
+    }
+  </script>
+</body>
+</html>
+
